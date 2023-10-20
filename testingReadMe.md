@@ -100,21 +100,76 @@ class UserViewModel extends ChangeNotifier {
 }
 ```
 
+<br/>
+
+
+## user_provider.dart
+
+```
+import 'package:flutter/foundation.dart';
+import 'package:your_app_name/models/user_model.dart';
+
+class UserProvider extends ChangeNotifier {
+  final List<UserModel> _users = [];
+
+  List<UserModel> get users => _users;
+
+  // Create a new user
+  void createUser(UserModel user) {
+    _users.add(user);
+    notifyListeners();
+  }
+
+  // Read (Retrieve) a user by their ID
+  UserModel? readUserById(String id) {
+    return _users.firstWhere((user) => user.id == id, orElse: () => null);
+  }
+
+  // Update a user's information
+  void updateUser(UserModel updatedUser) {
+    final index = _users.indexWhere((user) => user.id == updatedUser.id);
+    if (index != -1) {
+      _users[index] = updatedUser;
+      notifyListeners();
+    }
+  }
+
+  // Delete a user
+  void deleteUser(String id) {
+    _users.removeWhere((user) => user.id == id);
+    notifyListeners();
+  }
+}
+```
+
+<br/>
+
+
+## 
+
+```
+```
 
 
 
 
+<br/>
+
+
+## 
+
+```
+```
 
 
 
+<br/>
 
 
+## 
 
-
-
-
-
-
+```
+```
 
 
 
