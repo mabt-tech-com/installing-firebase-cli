@@ -446,8 +446,9 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+# Replace with your specific version
   provider: ^6.0.5
-  cloud_firestore: ^4.11.0 # Replace with your specific version
+  cloud_firestore: ^4.11.0 
 
 
 dev_dependencies:
