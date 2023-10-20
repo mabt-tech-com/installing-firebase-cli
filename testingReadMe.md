@@ -333,36 +333,134 @@ class _UserModifyScreenState extends State<UserModifyScreen> {
 <br/>
 
 
-## 
+## user_detail_screen.dart
 
 ```
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:your_app_name/models/user_model.dart';
+import 'package:your_app_name/viewmodels/user_viewmodel.dart';
+
+class UserDetailScreen extends StatelessWidget {
+  final String userId;
+
+  UserDetailScreen({required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    final userViewModel = Provider.of<UserViewModel>(context);
+    final UserModel? user = userViewModel.readUserById(userId);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Detail'),
+      ),
+      body: user != null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text('Name'),
+                  subtitle: Text(user.name),
+                ),
+                ListTile(
+                  title: Text('Age'),
+                  subtitle: Text(user.age.toString()),
+                ),
+              ],
+            )
+          : Center(
+              child: Text('User not found'),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the user modification screen when the FAB is tapped
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UserModifyScreen(isCreating: false, userId: userId),
+          ));
+        },
+        child: Icon(Icons.edit),
+      ),
+    );
+  }
+}
 ```
 
 
+<br/>
 
+---
+
+
+<br/>
+
+
+## main.dart
+
+```
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:your_app_name/providers/user_provider.dart';
+import 'package:your_app_name/viewmodels/user_viewmodel.dart';
+import 'package:your_app_name/screens/user_list_screen.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'User Management App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ChangeNotifierProvider(
+        create: (context) => UserProvider(),
+        child: UserListScreen(),
+      ),
+    );
+  }
+}
+```
 
 
 
 <br/>
 
 
-## 
+## pubspec.yaml
 
 ```
+name: your_app_name
+description: A new Flutter application
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0 #0+1
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  provider: ^6.0.5
+  cloud_firestore: ^4.11.0 # Replace with your specific version
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    # Add any assets you want to include (e.g., images, fonts)
+    - assets/
+  # Add other configurations as needed
 ```
-
-
-
-
-
-<br/>
-
-
-## 
-
-```
-```
-
 
 
 
