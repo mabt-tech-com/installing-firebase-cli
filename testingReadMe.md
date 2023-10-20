@@ -251,12 +251,117 @@ class UserListScreen extends StatelessWidget {
 <br/>
 
 
+## user_modify_screen.dart
+
+```
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:your_app_name/viewmodels/user_viewmodel.dart';
+
+class UserModifyScreen extends StatefulWidget {
+  final bool isCreating;
+  final String userId;
+
+  UserModifyScreen({required this.isCreating, this.userId = ''});
+
+  @override
+  _UserModifyScreenState createState() => _UserModifyScreenState();
+}
+
+class _UserModifyScreenState extends State<UserModifyScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (!widget.isCreating) {
+      // Fetch user data if not in create mode
+      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      final user = userViewModel.getUserById(widget.userId);
+      if (user != null) {
+        nameController.text = user.name;
+        ageController.text = user.age.toString();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.isCreating ? 'Create User' : 'Edit User'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              controller: ageController,
+              decoration: InputDecoration(labelText: 'Age'),
+              keyboardType: TextInputType.number,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Save or update user when the button is tapped
+                final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+                if (widget.isCreating) {
+                  userViewModel.createUser(nameController.text, int.tryParse(ageController.text) ?? 0);
+                } else {
+                  userViewModel.updateUser(widget.userId, nameController.text, int.tryParse(ageController.text) ?? 0);
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text(widget.isCreating ? 'Create' : 'Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+
+
+
+
+<br/>
+
+
 ## 
 
 ```
 ```
 
 
+
+
+
+
+<br/>
+
+
+## 
+
+```
+```
+
+
+
+
+
+<br/>
+
+
+## 
+
+```
+```
 
 
 
