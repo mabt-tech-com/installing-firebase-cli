@@ -145,9 +145,50 @@ class UserProvider extends ChangeNotifier {
 <br/>
 
 
-## 
+## user_service.dart
 
 ```
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:your_app_name/models/user_model.dart';
+
+class UserService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('users');
+
+  // Fetch user data from Firestore
+  Future<List<UserModel>> fetchUsers() async {
+    final usersSnapshot = await _usersCollection.get();
+    return usersSnapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return UserModel(
+        id: doc.id,
+        name: data['name'] as String,
+        age: data['age'] as int,
+      );
+    }).toList();
+  }
+
+  // Create a new user in Firestore
+  Future<void> createUser(UserModel user) async {
+    await _usersCollection.doc(user.id).set({
+      'name': user.name,
+      'age': user.age,
+    });
+  }
+
+  // Update a user's information in Firestore
+  Future<void> updateUser(UserModel updatedUser) async {
+    await _usersCollection.doc(updatedUser.id).update({
+      'name': updatedUser.name,
+      'age': updatedUser.age,
+    });
+  }
+
+  // Delete a user from Firestore
+  Future<void> deleteUser(String id) async {
+    await _usersCollection.doc(id).delete();
+  }
+}
 ```
 
 
@@ -159,6 +200,7 @@ class UserProvider extends ChangeNotifier {
 ## 
 
 ```
+
 ```
 
 
