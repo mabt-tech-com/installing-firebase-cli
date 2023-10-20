@@ -192,15 +192,58 @@ class UserService {
 ```
 
 
+<br/>
 
+# Screens 
 
 <br/>
 
 
-## 
+## user_list_screen.dart
 
 ```
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:your_app_name/models/user_model.dart';
+import 'package:your_app_name/viewmodels/user_viewmodel.dart';
 
+class UserListScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final userViewModel = Provider.of<UserViewModel>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User List'),
+      ),
+      body: ListView.builder(
+        itemCount: userViewModel.users.length,
+        itemBuilder: (context, index) {
+          final user = userViewModel.users[index];
+          return ListTile(
+            title: Text(user.name),
+            subtitle: Text('Age: ${user.age.toString()}'),
+            onTap: () {
+              // Navigate to the user detail screen when a user is tapped
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UserDetailScreen(userId: user.id),
+              ));
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the user creation screen when the FAB is tapped
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UserModifyScreen(isCreating: true),
+          ));
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
 ```
 
 
