@@ -36,6 +36,93 @@ Here's an explanation of the components in this structure:
 Using this architecture, the UserViewModel can listen to changes from UserProvider, which is backed by UserService for Firestore interactions. This architecture aligns with the MVVM pattern, separating the concerns of data modeling, view models, and data services, making your codebase organized and maintainable.
 
 
+---
+
+
+## user_model.dart 
+
+```
+class UserModel {
+  final String id;
+  String name;
+  int age;
+
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.age,
+  });
+}
+```
+
+<br/>
+
+## user_viewmodel.dart
+
+```
+import 'package:flutter/foundation.dart';
+import 'package:your_app_name/models/user_model.dart';
+import 'package:your_app_name/providers/user_provider.dart';
+
+class UserViewModel extends ChangeNotifier {
+  final UserProvider userProvider;
+
+  UserViewModel(this.userProvider);
+
+  List<UserModel> get users => userProvider.users;
+
+  // Add any view model logic here
+
+  // Example: Create a new user
+  void createUser(String name, int age) {
+    final newUser = UserModel(
+      id: UniqueKey().toString(),
+      name: name,
+      age: age,
+    );
+    userProvider.createUser(newUser);
+  }
+
+  // Example: Update user information
+  void updateUser(String userId, String newName, int newAge) {
+    final updatedUser = UserModel(
+      id: userId,
+      name: newName,
+      age: newAge,
+    );
+    userProvider.updateUser(updatedUser);
+  }
+
+  // Example: Delete a user
+  void deleteUser(String userId) {
+    userProvider.deleteUser(userId);
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
